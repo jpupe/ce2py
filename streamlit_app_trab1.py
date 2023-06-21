@@ -33,13 +33,10 @@ with st.container():
 
     possiveispags = dt1["payment_type"].unique().tolist()
     possiveispags = possiveispags[possiveispags !="nan"]
-    possiveispags = possiveispags.append("all")
-    pags_selectbox = st.multiselect("Selecione o(s) tipo(s) de pagamento(s)",possiveispags,"all")
-    if pags_selectbox == ["all"]:
-        dt1 = dt1
-    else:
-        pags_selectbox = pags_selectbox[pags_selectbox != "all"]
-        dt1 = dt1.query(f"payment_type in {pags_selectbox}")
+    #possiveispags = possiveispags.append("all")
+    pags_selectbox = st.multiselect("Selecione o(s) tipo(s) de pagamento(s)",possiveispags,possiveispags)
+    
+    dt1 = dt1.query(f"payment_type in {pags_selectbox}")
 
     count_clients = pd.DataFrame(dt1["customer_unique_id"].value_counts())
     count_clients.columns = [["Quantidade"]]
