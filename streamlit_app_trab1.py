@@ -33,7 +33,7 @@ with st.container():
 
     possiveispags = dt1["payment_type"].unique().tolist()
     possiveispags = possiveispags[possiveispags !="nan"]
-    possiveispags.append("all")
+    possiveispags = possiveispags.append("all")
     pags_selectbox = st.multiselect("Selecione o(s) tipo(s) de pagamento(s)",possiveispags,"all")
     if pags_selectbox == ["all"]:
         dt1 = dt1
