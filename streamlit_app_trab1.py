@@ -64,7 +64,7 @@ with st.container():
     pedidos["Atrasou?"]= pedidos["estimativa"] < pedidos["entrega"]
     dt_atraso = pedidos[["estimativa","entrega","Atrasou?","Diferença"]]
     
-    #dt_atraso["Diferença_dias"] = pd.Series([str(dt_atraso["Diferença"][i]).split(" ")[0] for i in range(len(dt_atraso["Diferença"]))])
+    dt_atraso["Diferença_dias"] = pd.Series([str(dt_atraso["Diferença"][i]).split(" ")[0] for i in range(len(dt_atraso["Diferença"]))])
     selec = st.radio("Selecione os pedidos que deseja analisar:",["Todos","Atrasados", "Sem atraso"])
     
     if selec == "Atrasados":
@@ -74,7 +74,7 @@ with st.container():
     if selec == "Todos":
         dt_atraso_i = dt_atraso
         
-    st.dataframe(dt_atraso_i)
+    dt_atraso_i
 
 
 
