@@ -92,30 +92,30 @@ with st.container():
 
 
 
-with st.container():
-    st.write("Compras/Preços por categoria")
+#with st.container():
+#    st.write("Compras/Preços por categoria")
     
 
-with st.container():
-    st.write("Produtos por preço/nº de vendas")
+#with st.container():
+#    st.write("Produtos por preço/nº de vendas")
     
 
-with st.container():
-    st.write("Avaliações por notas")
+#with st.container():
+#    st.write("Avaliações por notas")
     
 
-with st.container():
-    st.write("Avaliações por texto")
-    
-
-
-with st.container():
-    st.write("Pedidos por dia da semana")
+#with st.container():
+#    st.write("Avaliações por texto")
     
 
 
-with st.container():
-    st.write("Localização x Preços")
+#with st.container():
+#    st.write("Pedidos por dia da semana")
+    
+
+
+#with st.container():
+#    st.write("Localização x Preços")
     
 
 
