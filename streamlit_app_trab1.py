@@ -79,7 +79,11 @@ with st.container():
     dt_atraso_i = dt_atraso_i[dt_atraso_i["Diferença_dias"] != "NaT"]
     dt_atraso_i["Diferença_dias"] = pd.to_numeric(dt_atraso_i["Diferença_dias"])
     
-    hist_data = dt_atraso_i["Diferença_dias"]
+    chart_data = pd.DataFrame(
+        dt_atraso_i["Diferença_dias"]
+    )
+
+    st.line_chart(chart_data)
     
     
     
