@@ -65,14 +65,7 @@ with st.container():
     dt_atraso = pedidos[["estimativa","entrega","Atrasou?","Diferença"]]
     
     dt_atraso["Diferença_dias"] = pd.Series([str(dt_atraso["Diferença"][i]).split(" ")[0] for i in range(len(dt_atraso["Diferença"]))])
-    selec = st.radio(
-        "Selecione os pedidos que deseja analisar:",
-        ["Atrasados", "Sem atraso", "Todos"],
-        key="Todos",
-        label_visibility=True,
-        disabled=False,
-        horizontal=True,
-    )
+    selec = st.radio("Selecione os pedidos que deseja analisar:",["Todos","Atrasados", "Sem atraso"])
     
     if selec == "Atrasados":
         dt_atraso_i = dt_atraso[dt_atraso["Atrasou?"]]
