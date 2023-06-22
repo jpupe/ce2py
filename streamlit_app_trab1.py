@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 #import plotly.figure_factory as ff
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Dados Olist")
 
