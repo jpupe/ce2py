@@ -86,7 +86,7 @@ with st.container():
     st.line_chart(chart_data)
 
     st.dataframe(dt_atraso_i["Atrasou?"].value_counts())
-    
+    st.dataframe(dt_atraso_i[["Atrasou?","Diferença_dias"]].groupby(["Atrasou?"]).mean().count())
     
     
    
