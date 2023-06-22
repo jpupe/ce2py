@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
-import plotly.figure_factory as ff
+#import plotly.figure_factory as ff
+import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Dados Olist")
 
@@ -78,10 +79,9 @@ with st.container():
     dt_atraso_i = dt_atraso_i[dt_atraso_i["Diferença_dias"] != "NaT"]
     dt_atraso_i["Diferença_dias"] = pd.to_numeric(dt_atraso_i["Diferença_dias"])
     
-    hist_data = [dt_atraso_i["Diferença_dias"]]
-    fig = ff.create_distplot(
-        hist_data, bin_size=[.25])
-    st.plotly_chart(fig, use_container_width=True)
+    hist_data = dt_atraso_i["Diferença_dias"]
+    
+    
     
    
 
