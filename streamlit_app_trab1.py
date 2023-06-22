@@ -57,6 +57,31 @@ with st.container():
 
 with st.container():
     st.write("Produtos entregues com atraso")
+    pedidos["entrega"] = pd.to_datetime(pedidos["order_delivered_customer_date"],yearfirst=True)
+    pedidos["estimativa"] = pd.to_datetime(pedidos["order_estimated_delivery_date"],yearfirst=True)
+    
+    pedidos["Diferença"] = pedidos["estimativa"] - pedidos["entrega"]
+    pedidos["Atrasou?"]= pedidos["estimativa"] < pedidos["entrega"]
+    dt_atraso = pedidos[["estimativa","entrega","Atrasou?","Diferença"]]
+    
+    dt_atraso["Diferença_dias"] = pd.Series([str(dt_atraso["Diferença"][i]).split(" ")[0] for i in range(len(dt_atraso["Diferença"]))])
+    selec = st.radio(
+        "Selecione os pedidos que deseja analisar:",
+        ["Atrasados", "Sem atraso", "Todos"],
+        key="Todos",
+        label_visibility=True,
+        disabled=False,
+        horizontal=True,
+    )
+    
+    if selec == "Atrasados":
+        dt_atraso_i = dt_atraso[dt_atraso["Atrasou?"]]
+    if selec == "Sem atraso":
+        dt_atraso_i = dt_atraso[dt_atraso["Atrasou?"]== False]
+    if selec == "Todos":
+        dt_atraso_i = dt_atraso
+        
+    st.dataframe(dt_atraso_i)
 
 
 
