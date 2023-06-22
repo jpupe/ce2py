@@ -74,7 +74,7 @@ with st.container():
     if selec == "Todos":
         dt_atraso_i = dt_atraso
         
-    st.dataframe(dt_atraso_i)
+    st.dataframe(dt_atraso)
 
 
 
