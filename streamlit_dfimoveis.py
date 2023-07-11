@@ -85,7 +85,7 @@ dados["Vagas"] = pd.to_numeric(vagas).fillna(0)
 precos = dados["Preço"].str.replace("\\r\\n","").str.strip()
 precos = precos.str.split("\\n",expand=True)
 preco = precos.iloc[:,0].str.lower()
-preco = preco.str.replace("(r\\$|\\.|a partir de|sob consulta|simular crédito)","").str.strip()
+preco = preco.str.replace("(r\$|\.|a partir de|sob consulta|simular crédito)","").str.strip()
 dados["Preço"] = pd.to_numeric(preco)
 dados["CRECI_Anunciante"] = dados["CRECI_Anunciante"].str.replace("\\nCreci:\\n","").str.replace("\\n","")
 
