@@ -133,43 +133,43 @@ with tabdesc:
         
         tab1,tab2,tab3 = st.tabs(["Quartos","Suítes","Vagas"])
         with tab1:
-            col1,col2,col3 = st.columns(3)
+            col1q,col2q,col3q = st.columns(3)
             qts = pd.DataFrame(dados["Quartos"].value_counts())
             qts["Frequency"] = qts.iloc[:,0]
             qts["Quartos"] = qts.index
-            col1.bar_chart(qts, x = 'Quartos', y = 'Frequency')
+            col1q.bar_chart(qts, x = 'Quartos', y = 'Frequency')
             dtspreco = dados[["Quartos","Preço"]].groupby(['Quartos']).mean()
             dtspreco["Quartos"]=dtspreco.index
-            col2.bar_chart(dtspreco, x = 'Quartos', y = 'Preço')
+            col2q.bar_chart(dtspreco, x = 'Quartos', y = 'Preço')
             dtspreco2 = dados[["Quartos","Preço/m²"]].groupby(['Quartos']).mean()
             dtspreco2["Quartos"]=dtspreco2.index
-            col3.bar_chart(dtspreco2, x = 'Quartos', y = 'Preço/m²')
+            col3q.bar_chart(dtspreco2, x = 'Quartos', y = 'Preço/m²')
         
         with tab2:
-            col1,col2,col3 = st.columns(3)
+            col1s,col2s,col3s = st.columns(3)
             qts = pd.DataFrame(dados["Suítes"].value_counts())
             qts["Frequency"] = qts.iloc[:,0]
             qts["Suítes"] = qts.index
-            col1.bar_chart(qts, x = 'Suítes', y = 'Frequency')
+            col1s.bar_chart(qts, x = 'Suítes', y = 'Frequency')
             dtspreco = dados[["Suítes","Preço"]].groupby(['Suítes']).mean()
             dtspreco["Suítes"]=dtspreco.index
-            col2.bar_chart(dtspreco, x = 'Suítes', y = 'Preço')
+            col2s.bar_chart(dtspreco, x = 'Suítes', y = 'Preço')
             dtspreco2 = dados[["Suítes","Preço/m²"]].groupby(['Suítes']).mean()
             dtspreco2["Suítes"]=dtspreco2.index
-            col3.bar_chart(dtspreco2, x = 'Suítes', y = 'Preço/m²')
+            col3s.bar_chart(dtspreco2, x = 'Suítes', y = 'Preço/m²')
 
         with tab3:
-            col1,col2,col3 = st.columns(3)
+            col1v,col2v,col3v = st.columns(3)
             qts = pd.DataFrame(dados["Vagas"].value_counts())
             qts["Frequency"] = qts.iloc[:,0]
             qts["Vagas"] = qts.index
-            col1.bar_chart(qts, x = 'Vagas', y = 'Frequency')
+            col1v.bar_chart(qts, x = 'Vagas', y = 'Frequency')
             dtspreco = dados[["Vagas","Preço"]].groupby(['Vagas']).mean()
             dtspreco["Vagas"]=dtspreco.index
-            col2.bar_chart(dtspreco, x = 'Vagas', y = 'Preço')
+            col2v.bar_chart(dtspreco, x = 'Vagas', y = 'Preço')
             dtspreco2 = dados[["Vagas","Preço/m²"]].groupby(['Vagas']).mean()
             dtspreco2["Vagas"]=dtspreco2.index
-            col3.bar_chart(dtspreco2, x = 'Vagas', y = 'Preço/m²')
+            col3v.bar_chart(dtspreco2, x = 'Vagas', y = 'Preço/m²')
 
 with tabpred:
     with st.container():
