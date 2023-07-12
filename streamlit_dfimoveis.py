@@ -95,7 +95,7 @@ dados["Vagas"] = pd.to_numeric(vagas).fillna(0)
 precos = dados["Preço"].str.replace("\\r\\n","").str.strip()
 precos = precos.str.split("\\n",expand=True)
 preco = precos.iloc[:,0].str.lower()
-preco = preco.str.replace("a partir de","").str.replace("sob consulta","").str.replace("simular crédito","").str.replace("r","").str.replace("r","").str.replace("$","").str.replace(".","")
+preco = preco.str.replace("a partir de","").str.replace("sob consulta","").str.replace("simular crédito","").str.replace("r","").str.replace("$","").str.replace(".","")
 dados["Preço"] = pd.to_numeric(preco)
 dados["CRECI_Anunciante"] = dados["CRECI_Anunciante"].str.replace("\\nCreci:\\n","").str.replace("\\n","")
 
@@ -236,9 +236,9 @@ with tabpred:
         dt_params.index=range(len(dt_params.index))
         st.dataframe(dt_params)
         st.write(f"O R-quadrado ajustado do modelo foi {round(r2,2)}, logo, a(s) variável(is) selecionada(s) foram capazes de explicar aproximadamente {round(round(r2,2)*100)}% da variabilidade do preço dos imóveis.")
-        if r2<0.7:
+        if r2<0.5:
             st.write("O R-quadrado ajustado do modelo não está legal :confused:, provavelmente sua amostra não está específica ou significativa o suficiente, indicamos que faça uma nova pesquisa no site, filtrando uma amostra melhor, e dessa maneira renove o link aqui no app :wink:")
-        if r2 > 0.7:
+        if r2 > 0.5:
             st.write("O modelo aparentemente está explicando bem a variabilidade dos preços :grin:")
             st.write("Estime agora o valor de um imóvel :point_down:")
             colarea,colquartos,colsuites,colvagas = st.columns(4)
