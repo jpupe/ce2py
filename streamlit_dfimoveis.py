@@ -226,20 +226,20 @@ with st.container():
     st.write("----")
     st.write("Aqui estão os dados limpos:")
     st.dataframe(dados)
-    dadosdownload = dados
-    @st.cache_data
-    def convert_df(df):
-        # IMPORTANT: Cache the conversion to prevent computation on every rerun
-        return df.to_csv().encode('utf-8')
+    #dadosdownload = dados
+   # @st.cache_data
+    #def convert_df(df):
+    #    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    #    return df.to_csv().encode('utf-8')
 
-    csv = convert_df(dados)
+    #csv = convert_df(dados)
 
-    st.download_button(
-        label="Download data as CSV",
-        data=csv,
-        file_name='Dados_Limpos.csv',
-        mime='text/csv'
-    )
+    #st.download_button(
+    #    label="Download data as CSV",
+     #   data=csv,
+     #   file_name='Dados_Limpos.csv',
+     #   mime='text/csv'
+    #)
 
 
 
