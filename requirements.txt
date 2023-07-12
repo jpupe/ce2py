@@ -4,3 +4,4 @@ cloudscraper
 bs4
 unidecode
 numpy
+statsmodels
