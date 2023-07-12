@@ -106,6 +106,20 @@ dados = dados[dados["Preço"]>0]
 dados["Preço/m²"] = dados["Preço"]/dados["Área_Útil"]
 
 dados = dados[["Logradouro","Área_Útil","Quartos","Suítes","Vagas","Preço","Preço/m²","Link"]]
+
+area_quantis = scipy.stats.mstats.mquantiles(dados["Área_Útil"])
+LI_area = area_quantis[0] - 1.5 * (area_quantis[2]-area_quantis[0])
+LS_area = area_quantis[2] + 1.5 * (area_quantis[2]-area_quantis[0])
+
+preco_quantis = scipy.stats.mstats.mquantiles(dados["Preço"])
+LI_preco = preco_quantis[0] - 1.5 * (preco_quantis[2]-preco_quantis[0])
+LS_preco = preco_quantis[2] + 1.5 * (preco_quantis[2]-preco_quantis[0])
+
+dados = dados[dados["Área_Útil"]>= LI_area]
+dados = dados[dados["Área_Útil"]<= LS_area]
+dados = dados[dados["Preço"]>= LI_preco]
+dados = dados[dados["Preço"]<= LS_preco]
+
 dados.index = range(len(dados))
 
 
