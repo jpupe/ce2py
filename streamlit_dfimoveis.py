@@ -139,9 +139,9 @@ with st.container():
     st.write(f"Foram coletados {len(dados_COLETA)} imóveis, e deles, {len(dados)} estão, aparentemente, com informações corretas e serão úteis para as análise seguintes:")
 
 
-tab1,tab2,tab3 = st.tabs(["Análises Descritivas :bar_chart:","Análises Preditivas :dart:","Oportunidade :four_leaf_clover:"])
+tabdesc,tabpred,tabop = st.tabs(["Análises Descritivas :bar_chart:","Análises Preditivas :dart:","Oportunidade :four_leaf_clover:"])
 
-with tab1:
+with tabdesc:
     with st.container():
         st.title("Análises Descritivas :bar_chart:")
         dados_teste = dados
@@ -202,7 +202,7 @@ with tab1:
             dtspreco2["Vagas"]=dtspreco2.index
             col3.bar_chart(dtspreco2, x = 'Vagas', y = 'Preço/m²')
 
-with tab2:
+with tabpred:
     with st.container():
         st.title("Análises Preditivas :dart:")
         st.write("Para estimar preços de imóveis semelhantes aos da pesquisa feita, utiliza-se as variáveis numéricas Área_Útil, Quartos, Suítes e Vagas para traçar um modelo de regressão múltipla por Método dos Mínimos Quadrados Ordinários (MQO)")
