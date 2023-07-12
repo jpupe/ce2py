@@ -104,37 +104,6 @@ dados = dados[["Logradouro","CRECI_Anunciante","Área_Útil","Quartos","Suítes"
 dados.index = range(len(dados))
 
 
-y=dados["Preço"]
-x=dados.iloc[:,[2,3,4,5]]
-x=sm.add_constant(x)
-
-variaveis = []
-list_aics = []
-
-interacoes = [[0,1],[0,2],[0,3],[0,4],
-            [0,1,2],[0,1,3],[0,1,4],[0,2,3],[0,2,4],[0,3,4],
-            [0,1,2,3],[0,1,2,4],[0,1,3,4],[0,2,3,4],
-            [0,1,2,3,4]]
-
-for i in range(0,len(interacoes)):
-    vars= interacoes[i]
-    x_ = x.iloc[:,vars]
-    results = sm.OLS(y,x_).fit()
-    list_aics.append(results.aic)
-    variaveis.append(interacoes[i])#list(x.columns[interacoes[i]]))
-dt=pd.DataFrame({"AICs":list_aics,"Variaveis":variaveis})
-
-dt=dt[dt.AICs == dt.AICs.min()]
-variaveis_select = dt.iloc[0,1]
-x_def = x.iloc[:,variaveis_select]
-resultsdef = sm.OLS(y,x_def).fit()
-
-dt_params = pd.DataFrame({"Parâmetros":pd.Series(resultsdef.params),
-                          "P-Valores":pd.Series(resultsdef.pvalues)})
-
-
-
-
 with st.container():
     st.write(f"Foram coletados {len(dados_COLETA)} imóveis, e deles, {len(dados)} estão, aparentemente, com informações corretas e serão úteis para as análise seguintes:")
 
@@ -206,9 +175,35 @@ with tabpred:
     with st.container():
         st.title("Análises Preditivas :dart:")
         st.write("Para estimar preços de imóveis semelhantes aos da pesquisa feita, utiliza-se as variáveis numéricas Área_Útil, Quartos, Suítes e Vagas para traçar um modelo de regressão múltipla por Método dos Mínimos Quadrados Ordinários (MQO)")
+        y=dados["Preço"]
+        x=dados.iloc[:,[2,3,4,5]]
+        x=sm.add_constant(x)
+        variaveis = []
+        list_aics = []
+        interacoes = [[0,1],[0,2],[0,3],[0,4],
+                    [0,1,2],[0,1,3],[0,1,4],[0,2,3],[0,2,4],[0,3,4],
+                    [0,1,2,3],[0,1,2,4],[0,1,3,4],[0,2,3,4],
+                    [0,1,2,3,4]]
+        
+        for i in range(0,len(interacoes)):
+            vars= interacoes[i]
+            x_ = x.iloc[:,vars]
+            results = sm.OLS(y,x_).fit()
+            list_aics.append(results.aic)
+            variaveis.append(interacoes[i])#list(x.columns[interacoes[i]]))
+        dt=pd.DataFrame({"AICs":list_aics,"Variaveis":variaveis})
+
+        dt=dt[dt.AICs == dt.AICs.min()]
+        variaveis_select = dt.iloc[0,1]
+        x_def = x.iloc[:,variaveis_select]
+        resultsdef = sm.OLS(y,x_def).fit()
+
+        dt_params = pd.DataFrame({"Parâmetros":pd.Series(resultsdef.params),
+                                  "P-Valores":pd.Series(resultsdef.pvalues)})
         vars = ""
         for i in range(1,len(dt_params.index)):
             vars = vars + ", " + dt_params.index[i]
+        
         st.write(f"As variáveis selecionadas pela metodologia de StepWise foram: {vars}. E os parâmetros estimados para o modelo foram:")
         st.dataframe(dt_params)
 
