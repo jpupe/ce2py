@@ -78,7 +78,7 @@ with st.container():
     with coltitulo:
         st.subheader("Análise de imóveis pesquisados - DFimóveis")
     with colimagem:
-        image = Image.open("https://www.dfimoveis.com.br/img/dfimoveis/logo_colorida.svg")
+        image = Image.open("logo_colorida.png")
         st.image(image)
     st.write("Pesquise imóveis de interesse no site DFimóveis clicando [aqui.](https://www.dfimoveis.com.br/)")
     link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e cole no campo abaixo :point_down:","https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
