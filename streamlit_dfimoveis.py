@@ -74,7 +74,7 @@ with st.container():
     st.subheader("Trabalho para Computação em Estatística com Python")
     st.title("Análise de imóveis pesquisados - DFimóveis")
     st.write("Pesquise imóveis de interesse no site DFimóveis clicando [aqui.](https://www.dfimoveis.com.br/)")
-    link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e copie no campo abaixo :point_down:","https://www.dfimoveis.com.br/aluguel/df/brasilia/asa-norte/apartamento")
+    link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e copie no campo abaixo :point_down:","https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
     dados_COLETA = coleta_dfimoveis(url=str(link))
 
 dados = dados_COLETA
@@ -108,7 +108,7 @@ with st.container():
     st.write(f"Foram coletados {len(dados_COLETA)} imóveis, e deles, {len(dados)} estão, aparentemente, com informações corretas e serão úteis para as análise seguintes:")
 
 
-tabdesc,tabpred,tabop = st.tabs(["Análises Descritivas :bar_chart:","Análises Preditivas :dart:","Oportunidade :four_leaf_clover:"])
+tabdesc,tabpred,tabmet = st.tabs(["Análises Descritivas :bar_chart:","Análises Preditivas :dart:","Metodologias :memo:"])
 
 with tabdesc:
     with st.container():
@@ -197,21 +197,35 @@ with tabpred:
         variaveis_select = dt.iloc[0,1]
         x_def = x.iloc[:,variaveis_select]
         resultsdef = sm.OLS(y,x_def).fit()
+        r2 = resultsdef.rsquared_adj
 
         dt_params = pd.DataFrame({"Parâmetros":pd.Series(resultsdef.params),
                                   "P-Valores":pd.Series(resultsdef.pvalues)})
         vars = ""
         for i in range(1,len(dt_params.index)):
-            vars = vars + ", " + dt_params.index[i]
+            vars = vars + dt_params.index[i] + ", "
         
-        st.write(f"As variáveis selecionadas pela metodologia de StepWise foram: {vars}. E os parâmetros estimados para o modelo foram:")
+        st.write(f"As variáveis selecionadas pela metodologia de StepWise (utilizando o critério de AICs) foram: {vars}e os parâmetros estimados para o modelo foram:")
         st.dataframe(dt_params)
+        st.write(f"O R-quadrado ajustado do modelo foi {round(r2,3)}, logo, a(s) variável(is) selecionada(s) foram capazes de explicar {round(r2*100,2)}% da variabilidade do preço dos imóveis.")
+        if r2<0.7:
+            st.write("O R-quadrado ajustado do modelo não está legal :confused:, provavelmente sua amostra não está específica o suficiente, indicamos que faça uma nova pesquisa no site, filtrando uma amostra melhor, e dessa maneira renove o link aqui no app :wink:")
+        if r2 > 0.7:
+            st.write("O modelo aparentemente está explicando bem a variabilidade dos preços :grin:")
+            st.write("Estime agora o valor de um imóvel :point_down:")
 
 
-
-
-
-
+with tabmet:
+    with st.container():
+        st.title("Metodologias :memo:")
+        st.subheader("Regressão Linear")
+        st.write("A regressão linear é uma técnica estatística utilizada para modelar a relação entre uma variável dependente contínua e uma ou mais variáveis independentes. Na regressão linear simples, há apenas uma variável independente, enquanto na regressão linear múltipla, existem várias variáveis independentes. O objetivo é encontrar uma equação linear que melhor represente a relação entre essas variáveis, minimizando a diferença entre os valores observados e os valores previstos. Essa equação pode ser usada para fazer previsões ou inferências sobre os valores da variável dependente com base nas variáveis independentes. A regressão linear é amplamente utilizada em diversos campos, como economia, ciências sociais e engenharia, para analisar e entender as relações entre variáveis.")
+        st.subheader("Mínimos Quadrados Ordinários")
+        st.write("O método dos mínimos quadrados ordinários é uma técnica estatística utilizada na regressão linear para estimar os coeficientes da equação linear que melhor se ajusta aos dados observados. O método busca minimizar a soma dos quadrados dos resíduos, que são as diferenças entre os valores observados e os valores previstos pela equação de regressão. Para isso, ele calcula os coeficientes que reduzem ao máximo essa soma, resultando em uma linha ou superfície de regressão que melhor se ajusta aos dados. Esses coeficientes estimados são encontrados por meio de fórmulas matemáticas e podem ser interpretados como a contribuição relativa de cada variável independente para a variação da variável dependente. O método dos mínimos quadrados ordinários é amplamente utilizado devido à sua simplicidade e eficiência na obtenção de estimativas dos parâmetros da regressão linear.")
+        st.subheader("StepWise")
+        st.write("O método Stepwise é uma abordagem utilizado na regressão linear múltipla para selecionar as melhores variáveis independentes a serem incluídas no modelo de regressão. O processo ocorre em etapas, onde inicialmente o modelo é ajustado com uma variável independente e, em seguida, a cada passo, outras variáveis são adicionadas ou removidas com base em critérios estatísticos. O método Stepwise utiliza critérios como o valor-p, o coeficiente de determinação ajustado (R² ajustado) ou o critério de informação de Akaike (AIC) para avaliar a relevância e a contribuição de cada variável. No primeiro passo, o método pode começar com a variável independente mais significativa e, a partir daí, as variáveis são selecionadas ou removidas de acordo com um critério pré-definido (por exemplo, valor-p abaixo de um determinado limiar). O processo continua até que não haja mais melhorias significativas no modelo. O método Stepwise é uma maneira automatizada de selecionar variáveis relevantes para construir um modelo de regressão múltipla.")
+        st.subheader("Critério AIC")
+        st.write("O critério de informação de Akaike (AIC) é uma medida estatística utilizada para comparar e selecionar modelos estatísticos. Ele busca encontrar o equilíbrio entre o ajuste do modelo aos dados e a complexidade do modelo. O AIC é calculado a partir da função de verossimilhança do modelo, penalizando a adição de parâmetros ao modelo com base na quantidade de dados disponíveis. Quanto menor o valor do AIC, melhor é o ajuste do modelo. O critério de Akaike é amplamente utilizado na seleção de modelos, especialmente em regressão linear múltipla, onde diferentes combinações de variáveis independentes são testadas e o modelo com o menor AIC é considerado o mais adequado.")
 
 
 
@@ -221,40 +235,3 @@ with st.container():
     st.write("----")
     st.write("Aqui estão os dados limpos:")
     st.dataframe(dados)
-    #dadosdownload = dados
-   # @st.cache_data
-    #def convert_df(df):
-    #    # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    #    return df.to_csv().encode('utf-8')
-
-    #csv = convert_df(dados)
-
-    #st.download_button(
-    #    label="Download data as CSV",
-     #   data=csv,
-     #   file_name='Dados_Limpos.csv',
-     #   mime='text/csv'
-    #)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
