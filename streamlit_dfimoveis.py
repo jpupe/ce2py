@@ -13,7 +13,7 @@ import time
 import time, datetime, os
 import statsmodels.api as sm
 import scipy
-import cv2
+#import cv2
 #from PIL import Image
 
 def coleta_dfimoveis(url):
