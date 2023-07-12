@@ -79,10 +79,7 @@ with st.container():
     with coltitulo:
         st.subheader("Análise de imóveis pesquisados - DFimóveis")
     with colimagem:
-        uploaded_file = st.file_uploader("logo_colorida", type="png")
-        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-        opencv_image = cv2.imdecode(file_bytes, 1)
-        st.image(opencv_image, channels="BGR")
+        st.image("https://www.dfimoveis.com.br/img/dfimoveis/logo_colorida.svg")
     st.write("Pesquise imóveis de interesse no site DFimóveis clicando [aqui.](https://www.dfimoveis.com.br/)")
     link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e cole no campo abaixo :point_down:","https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
     dados_COLETA = coleta_dfimoveis(url=str(link))
