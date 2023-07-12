@@ -6,3 +6,4 @@ unidecode
 numpy
 statsmodels
 scipy
+PIL
