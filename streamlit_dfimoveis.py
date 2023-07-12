@@ -12,6 +12,7 @@ import math as mat
 import time
 import time, datetime, os
 import statsmodels.api as sm
+import scipy
 
 def coleta_dfimoveis(url):
     ts=1
@@ -71,16 +72,20 @@ def coleta_dfimoveis(url):
 
 st.set_page_config(page_title="Analytics ImoApp")
 with st.container():
-    st.subheader("Trabalho para Computação em Estatística com Python")
-    st.title("Análise de imóveis pesquisados - DFimóveis")
+    #st.subheader("Trabalho para Computação em Estatística com Python")
+    st.subheader("Análise de imóveis pesquisados - DFimóveis")
     st.write("Pesquise imóveis de interesse no site DFimóveis clicando [aqui.](https://www.dfimoveis.com.br/)")
-    link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e copie no campo abaixo :point_down:","https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
+    link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e cole no campo abaixo :point_down:","https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
     dados_COLETA = coleta_dfimoveis(url=str(link))
 
 dados = dados_COLETA
 dados['Logradouro'] = dados["Titulo"].str.strip()
 dados["Área_Útil"] = pd.to_numeric(pd.Series(dados["Área_Útil"].str.split(" ",expand=True).iloc[:,0].str.strip()))
 dados["Detalhes"] = dados["Detalhes"].str.lower()
+
+dados["Conferir_detalhes"] = dados["Detalhes"].str.find("m²")
+dados = dados[dados["Conferir_detalhes"] != -1]
+
 quartos = dados["Detalhes"].str.split("quarto",expand=True).iloc[:,0].str.split("\\n\\n\\n",expand=True).iloc[:,1].str.strip()
 dados["Quartos"] = pd.to_numeric(quartos).fillna(0)
 suites = dados["Detalhes"].str.extract("(\\n.*suíte)").iloc[:,0].str.replace("suíte","").str.replace("\\n","").str.strip()
@@ -100,7 +105,7 @@ dados = dados[dados["Área_Útil"]>0]
 dados = dados[dados["Preço"]>0]
 dados["Preço/m²"] = dados["Preço"]/dados["Área_Útil"]
 
-dados = dados[["Logradouro","CRECI_Anunciante","Área_Útil","Quartos","Suítes","Vagas","Preço","Preço/m²","Link"]]
+dados = dados[["Logradouro","Área_Útil","Quartos","Suítes","Vagas","Preço","Preço/m²","Link"]]
 dados.index = range(len(dados))
 
 
@@ -133,50 +138,50 @@ with tabdesc:
         
         tab1,tab2,tab3 = st.tabs(["Quartos","Suítes","Vagas"])
         with tab1:
-            col1q,col2q,col3q = st.columns(3)
+            col1,col2,col3 = st.columns(3)
             qts = pd.DataFrame(dados["Quartos"].value_counts())
             qts["Frequency"] = qts.iloc[:,0]
             qts["Quartos"] = qts.index
-            col1q.bar_chart(qts, x = 'Quartos', y = 'Frequency')
+            col1.bar_chart(qts, x = 'Quartos', y = 'Frequency')
             dtspreco = dados[["Quartos","Preço"]].groupby(['Quartos']).mean()
             dtspreco["Quartos"]=dtspreco.index
-            col2q.bar_chart(dtspreco, x = 'Quartos', y = 'Preço')
+            col2.bar_chart(dtspreco, x = 'Quartos', y = 'Preço')
             dtspreco2 = dados[["Quartos","Preço/m²"]].groupby(['Quartos']).mean()
             dtspreco2["Quartos"]=dtspreco2.index
-            col3q.bar_chart(dtspreco2, x = 'Quartos', y = 'Preço/m²')
+            col3.bar_chart(dtspreco2, x = 'Quartos', y = 'Preço/m²')
         
         with tab2:
-            col1s,col2s,col3s = st.columns(3)
+            col1,col2,col3 = st.columns(3)
             qts = pd.DataFrame(dados["Suítes"].value_counts())
             qts["Frequency"] = qts.iloc[:,0]
             qts["Suítes"] = qts.index
-            col1s.bar_chart(qts, x = 'Suítes', y = 'Frequency')
+            col1.bar_chart(qts, x = 'Suítes', y = 'Frequency')
             dtspreco = dados[["Suítes","Preço"]].groupby(['Suítes']).mean()
             dtspreco["Suítes"]=dtspreco.index
-            col2s.bar_chart(dtspreco, x = 'Suítes', y = 'Preço')
+            col2.bar_chart(dtspreco, x = 'Suítes', y = 'Preço')
             dtspreco2 = dados[["Suítes","Preço/m²"]].groupby(['Suítes']).mean()
             dtspreco2["Suítes"]=dtspreco2.index
-            col3s.bar_chart(dtspreco2, x = 'Suítes', y = 'Preço/m²')
+            col3.bar_chart(dtspreco2, x = 'Suítes', y = 'Preço/m²')
 
         with tab3:
-            col1v,col2v,col3v = st.columns(3)
+            col1,col2,col3 = st.columns(3)
             qts = pd.DataFrame(dados["Vagas"].value_counts())
             qts["Frequency"] = qts.iloc[:,0]
             qts["Vagas"] = qts.index
-            col1v.bar_chart(qts, x = 'Vagas', y = 'Frequency')
+            col1.bar_chart(qts, x = 'Vagas', y = 'Frequency')
             dtspreco = dados[["Vagas","Preço"]].groupby(['Vagas']).mean()
             dtspreco["Vagas"]=dtspreco.index
-            col2v.bar_chart(dtspreco, x = 'Vagas', y = 'Preço')
+            col2.bar_chart(dtspreco, x = 'Vagas', y = 'Preço')
             dtspreco2 = dados[["Vagas","Preço/m²"]].groupby(['Vagas']).mean()
             dtspreco2["Vagas"]=dtspreco2.index
-            col3v.bar_chart(dtspreco2, x = 'Vagas', y = 'Preço/m²')
+            col3.bar_chart(dtspreco2, x = 'Vagas', y = 'Preço/m²')
 
 with tabpred:
     with st.container():
         st.title("Análises Preditivas :dart:")
         st.write("Para estimar preços de imóveis semelhantes aos da pesquisa feita, utiliza-se as variáveis numéricas Área_Útil, Quartos, Suítes e Vagas para traçar um modelo de regressão múltipla por Método dos Mínimos Quadrados Ordinários (MQO)")
         y=dados["Preço"]
-        x=dados.iloc[:,[2,3,4,5]]
+        x=dados.iloc[:,[1,2,3,4]]
         x=sm.add_constant(x)
         variaveis = []
         list_aics = []
@@ -198,21 +203,51 @@ with tabpred:
         x_def = x.iloc[:,variaveis_select]
         resultsdef = sm.OLS(y,x_def).fit()
         r2 = resultsdef.rsquared_adj
+        if f"{round(r2*100,2)}%" == "nan%":
+            r2 = 0
 
         dt_params = pd.DataFrame({"Parâmetros":pd.Series(resultsdef.params),
                                   "P-Valores":pd.Series(resultsdef.pvalues)})
+        dt_params["Variável"] = dt_params.index
+        dt_params = dt_params[["Variável","Parâmetros"]]
+
+        dt_params_completa = pd.DataFrame({"Variável":["const","Área_Útil","Quartos","Suítes","Vagas"]})
+        dt_params_completa = dt_params_completa.merge(dt_params,how="left",on=["Variável"])
+        dt_params_completa["Parâmetros"] = dt_params_completa["Parâmetros"].fillna(0)
+
         vars = ""
         for i in range(1,len(dt_params.index)):
             vars = vars + dt_params.index[i] + ", "
         
         st.write(f"As variáveis selecionadas pela metodologia de StepWise (utilizando o critério de AICs) foram: {vars}e os parâmetros estimados para o modelo foram:")
+        dt_params.index=range(len(dt_params.index))
         st.dataframe(dt_params)
-        st.write(f"O R-quadrado ajustado do modelo foi {round(r2,3)}, logo, a(s) variável(is) selecionada(s) foram capazes de explicar {round(r2*100,2)}% da variabilidade do preço dos imóveis.")
+        st.write(f"O R-quadrado ajustado do modelo foi {round(r2,2)}, logo, a(s) variável(is) selecionada(s) foram capazes de explicar aproximadamente {round(round(r2,2)*100)}% da variabilidade do preço dos imóveis.")
         if r2<0.7:
-            st.write("O R-quadrado ajustado do modelo não está legal :confused:, provavelmente sua amostra não está específica o suficiente, indicamos que faça uma nova pesquisa no site, filtrando uma amostra melhor, e dessa maneira renove o link aqui no app :wink:")
+            st.write("O R-quadrado ajustado do modelo não está legal :confused:, provavelmente sua amostra não está específica ou significativa o suficiente, indicamos que faça uma nova pesquisa no site, filtrando uma amostra melhor, e dessa maneira renove o link aqui no app :wink:")
         if r2 > 0.7:
             st.write("O modelo aparentemente está explicando bem a variabilidade dos preços :grin:")
             st.write("Estime agora o valor de um imóvel :point_down:")
+            colarea,colquartos,colsuites,colvagas = st.columns(4)
+            area = colarea.number_input("Área útil",0)
+            nquartos = colquartos.number_input("Nº de quartos",0)
+            nsuites = colsuites.number_input("Nº de suítes",0)
+            nvagas = colvagas.number_input("Nº de vagas",0)
+
+            precoest = (dt_params_completa[dt_params_completa["Variável"]=="const"].iloc[0,1] + 
+                     dt_params_completa[dt_params_completa["Variável"]=="Área_Útil"].iloc[0,1]*area +
+                     dt_params_completa[dt_params_completa["Variável"]=="Quartos"].iloc[0,1]*nquartos +
+                     dt_params_completa[dt_params_completa["Variável"]=="Suítes"].iloc[0,1]*nsuites + 
+                     dt_params_completa[dt_params_completa["Variável"]=="Vagas"].iloc[0,1]*nvagas)
+            
+            st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
+
+            
+
+            
+
+
+
 
 
 with tabmet:
