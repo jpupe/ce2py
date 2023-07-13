@@ -120,7 +120,7 @@ else:
 
 
 precos = dados["Preço"].str.split("\n",expand=True)
-preco = precos.iloc[:,0].str.lower()
+preco = precos.iloc[:,1].str.lower()
 preco = preco.str.replace("a partir de","").str.replace("sob consulta","").str.replace("simular crédito","").str.replace("r","").str.replace("$","").str.replace(".","")
 dados["Preço"] = pd.to_numeric(preco)
 
@@ -147,12 +147,12 @@ LI_precom2 = precom2_quantis[0] - 1.5 * (precom2_quantis[2]-precom2_quantis[0])
 LS_precom2 = precom2_quantis[2] + 1.5 * (precom2_quantis[2]-precom2_quantis[0])
 
 
-#dados = dados[dados["Área_Útil"]>= LI_area]
-#dados = dados[dados["Área_Útil"]<= LS_area]
-#dados = dados[dados["Preço"]>= LI_preco]
-#dados = dados[dados["Preço"]<= LS_preco]
-#dados = dados[dados["Preço/m²"]>= LI_precom2]
-#dados = dados[dados["Preço/m²"]<= LS_precom2]
+dados = dados[dados["Área_Útil"]>= LI_area]
+dados = dados[dados["Área_Útil"]<= LS_area]
+dados = dados[dados["Preço"]>= LI_preco]
+dados = dados[dados["Preço"]<= LS_preco]
+dados = dados[dados["Preço/m²"]>= LI_precom2]
+dados = dados[dados["Preço/m²"]<= LS_precom2]
 
 dados.index = range(len(dados))
 
