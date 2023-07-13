@@ -121,8 +121,8 @@ else:
 
 precos = dados["Preço"].str.split("\n",expand=True)
 preco = precos.iloc[:,1].str.lower()
-preco = preco.str.replace("a partir de","").str.replace("sob consulta","").str.replace("simular crédito","").str.replace("r","").str.replace("$","").str.replace(".","")
-dados["Preço"] = pd.to_numeric(preco)
+preco = preco.str.replace("a partir de","").str.replace("sob consulta","").str.replace("simular crédito","").str.replace("r","").str.replace("$","").str.replace(".","").str.strip()
+dados["Preço"] = pd.to_numeric(preco).fillna(0)
 
 
 dados["CRECI_Anunciante"] = dados["CRECI_Anunciante"].str.replace("\\nCreci:\\n","").str.replace("\\n","")
