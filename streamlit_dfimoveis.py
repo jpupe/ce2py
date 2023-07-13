@@ -117,11 +117,13 @@ else:
     dados["Vagas"] = pd.Series([0]*len(dados["Detalhes"]))
 
 
-precos = dados["Preço"].str.replace("\\r\\n","").str.strip()
-precos = precos.str.split("\\n",expand=True)
+precos = dados["Preço"].str.extract("\nR$.*\n")
+precos = precos.str.replace("\nR$","").str.replace("\n","")
 preco = precos.iloc[:,0].str.lower()
 preco = preco.str.replace("a partir de","").str.replace("sob consulta","").str.replace("simular crédito","").str.replace("r","").str.replace("$","").str.replace(".","")
 dados["Preço"] = pd.to_numeric(preco)
+
+
 dados["CRECI_Anunciante"] = dados["CRECI_Anunciante"].str.replace("\\nCreci:\\n","").str.replace("\\n","")
 
 dados = dados.dropna(subset=["Área_Útil","Preço"])
