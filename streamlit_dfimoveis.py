@@ -92,19 +92,31 @@ dados["Detalhes"] = dados["Detalhes"].str.lower()
 dados["Conferir_detalhes"] = dados["Detalhes"].str.find("m²")
 dados = dados[dados["Conferir_detalhes"] != -1]
 
-#quartos = dados["Detalhes"].str.split("quarto",expand=True).iloc[:,0].str.split("\\n\\n\\n",expand=True).iloc[:,1].str.strip()
-quartos = dados["Detalhes"].str.extract("(\\n.*quarto)").iloc[:,0].str.replace("quarto","").str.replace("\\n","").str.strip()
-if quartos.str.find("a").sum() != -len(quartos):
-    quartos = quartos.str.split(" ",expand=True).iloc[:,0].str.strip()
-dados["Quartos"] = pd.to_numeric(quartos).fillna(0)
-suites = dados["Detalhes"].str.extract("(\\n.*suíte)").iloc[:,0].str.replace("suíte","").str.replace("\\n","").str.strip()
-if suites.str.find("a").sum() != -len(suites):
-    suites = suites.str.split(" ",expand=True).iloc[:,0].str.strip()
-dados["Suítes"] = pd.to_numeric(suites).fillna(0)
-vagas = dados["Detalhes"].str.extract("(\\n.*vaga)").iloc[:,0].str.replace("vaga","").str.replace("\\n","").str.strip()
-if vagas.str.find("a").sum() != -len(vagas):
-    vagas = vagas.str.split(" ",expand=True).iloc[:,0].str.strip()
-dados["Vagas"] = pd.to_numeric(vagas).fillna(0)
+if dados["Detalhes"].str.find("quarto").sum() !=  -len(dados["Detalhes"]):
+    quartos = dados["Detalhes"].str.extract("(\\n.*quarto)").iloc[:,0].str.replace("quarto","").str.replace("\\n","").str.strip()
+    if quartos.str.find("a").sum() != -len(quartos):
+        quartos = quartos.str.split(" ",expand=True).iloc[:,0].str.strip()
+    dados["Quartos"] = pd.to_numeric(quartos).fillna(0)
+else:
+    dados["Quartos"] = pd.Series([0]*len(dados["Detalhes"]))
+
+if dados["Detalhes"].str.find("suíte").sum() !=  -len(dados["Detalhes"]):    
+    suites = dados["Detalhes"].str.extract("(\\n.*suíte)").iloc[:,0].str.replace("suíte","").str.replace("\\n","").str.strip()
+    if suites.str.find("a").sum() != -len(suites):
+        suites = suites.str.split(" ",expand=True).iloc[:,0].str.strip()
+    dados["Suítes"] = pd.to_numeric(suites).fillna(0)
+else:
+    dados["Suítes"] = pd.Series([0]*len(dados["Detalhes"]))
+
+if dados["Detalhes"].str.find("vaga").sum() !=  -len(dados["Detalhes"]):
+    vagas = dados["Detalhes"].str.extract("(\\n.*vaga)").iloc[:,0].str.replace("vaga","").str.replace("\\n","").str.strip()
+    if vagas.str.find("a").sum() != -len(vagas):
+        vagas = vagas.str.split(" ",expand=True).iloc[:,0].str.strip()
+    dados["Vagas"] = pd.to_numeric(vagas).fillna(0)
+else:
+    dados["Vagas"] = pd.Series([0]*len(dados["Detalhes"]))
+
+
 precos = dados["Preço"].str.replace("\\r\\n","").str.strip()
 precos = precos.str.split("\\n",expand=True)
 preco = precos.iloc[:,0].str.lower()
