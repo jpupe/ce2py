@@ -86,7 +86,9 @@ with st.container():
 
 dados = dados_COLETA
 dados['Logradouro'] = dados["Titulo"].str.strip()
-dados["Área_Útil"] = pd.to_numeric(pd.Series(dados["Área_Útil"].str.split(" ",expand=True).iloc[:,0].str.strip()))
+
+dados["Área_Útil"] = pd.to_numeric(pd.Series(dados["Área_Útil"].str.split(" ",expand=True).iloc[:,0].str.replace("\n","").str.strip()))
+
 dados["Detalhes"] = dados["Detalhes"].str.lower()
 
 dados["Conferir_detalhes"] = dados["Detalhes"].str.find("m²")
