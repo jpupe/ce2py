@@ -94,10 +94,13 @@ dados = dados[dados["Conferir_detalhes"] != -1]
 
 #quartos = dados["Detalhes"].str.split("quarto",expand=True).iloc[:,0].str.split("\\n\\n\\n",expand=True).iloc[:,1].str.strip()
 quartos = dados["Detalhes"].str.extract("(\\n.*quarto)").iloc[:,0].str.replace("quarto","").str.replace("\\n","").str.strip()
+quartos = quartos.str.split(" ",expand=True).iloc[:,0].str.strip()
 dados["Quartos"] = pd.to_numeric(quartos).fillna(0)
 suites = dados["Detalhes"].str.extract("(\\n.*suíte)").iloc[:,0].str.replace("suíte","").str.replace("\\n","").str.strip()
+suites = suites.str.split(" ",expand=True).iloc[:,0].str.strip()
 dados["Suítes"] = pd.to_numeric(suites).fillna(0)
 vagas = dados["Detalhes"].str.extract("(\\n.*vaga)").iloc[:,0].str.replace("vaga","").str.replace("\\n","").str.strip()
+vagas = vagas.str.split(" ",expand=True).iloc[:,0].str.strip()
 dados["Vagas"] = pd.to_numeric(vagas).fillna(0)
 precos = dados["Preço"].str.replace("\\r\\n","").str.strip()
 precos = precos.str.split("\\n",expand=True)
