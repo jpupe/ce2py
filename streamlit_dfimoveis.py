@@ -117,8 +117,7 @@ else:
     dados["Vagas"] = pd.Series([0]*len(dados["Detalhes"]))
 
 
-precos = dados["Preço"].str.extract("\nR$.*\n")
-precos = precos.str.replace("\nR$","").str.replace("\n","")
+precos = dados["Preço"].str.split("\n",expand=True)
 preco = precos.iloc[:,0].str.lower()
 preco = preco.str.replace("a partir de","").str.replace("sob consulta","").str.replace("simular crédito","").str.replace("r","").str.replace("$","").str.replace(".","")
 dados["Preço"] = pd.to_numeric(preco)
