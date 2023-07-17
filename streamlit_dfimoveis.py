@@ -284,7 +284,6 @@ with tabpred:
         if r2<0.5:
             st.write("O R-quadrado ajustado do modelo não está legal :confused:, provavelmente sua amostra não está específica ou significativa o suficiente, indicamos que faça uma nova pesquisa no site, filtrando uma amostra melhor, e dessa maneira renove o link aqui no app :wink:")
         if r2 > 0.5:
-            #with st.form("inputs"):
             st.write("O modelo aparentemente está explicando bem a variabilidade dos preços :grin:")
             st.write("Estime agora o valor de um imóvel :point_down:")
             colarea,colquartos,colsuites,colvagas = st.columns(4)
@@ -303,8 +302,7 @@ with tabpred:
                         dt[dt["Variável"]=="Quartos"].iloc[0,1]*nquartos +
                         dt[dt["Variável"]=="Suítes"].iloc[0,1]*nsuites + 
                         dt[dt["Variável"]=="Vagas"].iloc[0,1]*nvagas)
-             #if st.button("Calcular"):
-             st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
+            st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
 
 
 with tabmet:
