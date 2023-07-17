@@ -84,7 +84,7 @@ with st.form("meu_formulario"):
     link = st.text_input(label = "Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e cole no campo abaixo :point_down:",
                          value = "https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
     st.session_state["link_coleta"] = link
-    submitted = st.form_submit_button("Submit")
+    submitted = st.form_submit_button("Coletar Dados")
     if submitted:
         dados_COLETA = coleta_dfimoveis(st.session_state.link_coleta)
         st.session_state["dados"] = dados_COLETA
@@ -301,14 +301,19 @@ with tabpred:
                 st.session_state["nquartos"] = colquartos.number_input("Nº de quartos",0)
                 st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",0)
                 st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",0)
+                st.writer("Busque calcular o preço apenas para um imóvel que se assemelhe aos coletados que estão na amostra :exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
 
-                precoest = (dt_params_completa[dt_params_completa["Variável"]=="const"].iloc[0,1] + 
-                     dt_params_completa[dt_params_completa["Variável"]=="Área_Útil"].iloc[0,1]*st.session_state.area +
-                     dt_params_completa[dt_params_completa["Variável"]=="Quartos"].iloc[0,1]*st.session_state.nquartos +
-                     dt_params_completa[dt_params_completa["Variável"]=="Suítes"].iloc[0,1]*st.session_state.nsuites + 
-                     dt_params_completa[dt_params_completa["Variável"]=="Vagas"].iloc[0,1]*st.session_state.nvagas)
+                submitted = st.form_submit_button("Calcular")
+                if submitted:
+                    st.write("slider", slider_val, "checkbox", checkbox_val)
+
+                    precoest = (dt_params_completa[dt_params_completa["Variável"]=="const"].iloc[0,1] + 
+                                dt_params_completa[dt_params_completa["Variável"]=="Área_Útil"].iloc[0,1]*st.session_state.area +
+                                dt_params_completa[dt_params_completa["Variável"]=="Quartos"].iloc[0,1]*st.session_state.nquartos +
+                                dt_params_completa[dt_params_completa["Variável"]=="Suítes"].iloc[0,1]*st.session_state.nsuites + 
+                                dt_params_completa[dt_params_completa["Variável"]=="Vagas"].iloc[0,1]*st.session_state.nvagas)
             
-                st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
+                    st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
 
             
 
