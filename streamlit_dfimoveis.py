@@ -14,7 +14,8 @@ import time, datetime, os
 import statsmodels.api as sm
 import scipy
 #import cv2
-#from PIL import Image
+from PIL import Image
+import requests
 
 def coleta_dfimoveis(url):
     ts=1
@@ -79,7 +80,9 @@ with st.container():
     with coltitulo:
         st.subheader("Análise de imóveis pesquisados - DFimóveis")
     with colimagem:
-        st.image("https://www.dfimoveis.com.br/img/dfimoveis/logo_colorida.svg")
+        url = "https://www.dfimoveis.com.br/img/dfimoveis/logo_colorida.svg"
+        im = Image.open(requests.get(url, stream=True).raw)
+        st.image(im)
     st.write("Pesquise imóveis de interesse no site DFimóveis clicando [aqui.](https://www.dfimoveis.com.br/)")
     link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e cole no campo abaixo :point_down:","https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
     dados_COLETA = coleta_dfimoveis(url=str(link))
