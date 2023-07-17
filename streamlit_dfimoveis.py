@@ -74,7 +74,8 @@ def coleta_dfimoveis(url):
 
 st.set_page_config(page_title="Analytics ImoApp")
 
-st.session_state["dados"] = coleta_dfimoveis("https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
+firstcoleta = coleta_dfimoveis("https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
+st.session_state["dados"] = firstcoleta
 
 with st.form("meu_formulario"):
     #st.subheader("Trabalho para Computação em Estatística com Python")
@@ -292,7 +293,7 @@ with tabpred:
         if r2<0.5:
             st.write("O R-quadrado ajustado do modelo não está legal :confused:, provavelmente sua amostra não está específica ou significativa o suficiente, indicamos que faça uma nova pesquisa no site, filtrando uma amostra melhor, e dessa maneira renove o link aqui no app :wink:")
         if r2 > 0.5:
-            st.form("inputs_projecao"):
+            st.form("inputs"):
                 st.write("O modelo aparentemente está explicando bem a variabilidade dos preços :grin:")
                 st.write("Estime agora o valor de um imóvel :point_down:")
                 colarea,colquartos,colsuites,colvagas = st.columns(4)
