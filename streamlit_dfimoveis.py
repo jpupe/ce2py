@@ -73,7 +73,8 @@ def coleta_dfimoveis(url):
 
 st.set_page_config(page_title="Analytics ImoApp")
 
-dados_COLETA = coleta_dfimoveis("https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
+link = "https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw"
+dados_COLETA = coleta_dfimoveis(link)
 st.session_state["dados"] = dados_COLETA
 
 with st.form("meu_formulario"):
@@ -174,7 +175,7 @@ dados.index = range(len(dados))
 st.session_state["dados_limpos"] = dados
 
 with st.container():
-    st.write(f"Foram coletados {len(dados_COLETA)} imóveis, e deles, {len(dados)} estão, aparentemente, com informações corretas e serão úteis para as análise seguintes:")
+    st.write(f"Na busca do link '{link}', foram coletados {len(dados_COLETA)} imóveis, e deles, {len(dados)} estão, aparentemente, com informações corretas e serão úteis para as análise seguintes:")
 
 
 tabdesc,tabpred,tabmet = st.tabs(["Análises Descritivas :bar_chart:","Análises Preditivas :dart:","Metodologias :memo:"])
