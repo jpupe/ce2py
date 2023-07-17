@@ -305,8 +305,6 @@ with tabpred:
 
                 submitted = st.form_submit_button("Calcular")
                 if submitted:
-                    st.write("slider", slider_val, "checkbox", checkbox_val)
-
                     precoest = (dt_params_completa[dt_params_completa["Variável"]=="const"].iloc[0,1] + 
                                 dt_params_completa[dt_params_completa["Variável"]=="Área_Útil"].iloc[0,1]*st.session_state.area +
                                 dt_params_completa[dt_params_completa["Variável"]=="Quartos"].iloc[0,1]*st.session_state.nquartos +
