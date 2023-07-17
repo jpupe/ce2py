@@ -88,10 +88,10 @@ with st.form("meu_formulario"):
     st.write("Com a coleta dos imóveis do link depositado acima, será ajustado um modelo de regressão linear múltipla e projetado o preço de um imóvel com as seguintes características :point_down:")
     
     colarea,colquartos,colsuites,colvagas = st.columns(4)
-    st.session_state["area"] = colarea.number_input("Área útil",80)
-    st.session_state["nquartos"] = colquartos.number_input("Nº de quartos",2)
-    st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",1)
-    st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",1)
+    st.session_state["area"] = colarea.number_input(label = "Área útil",value = 80)
+    st.session_state["nquartos"] = colquartos.number_input(label = "Nº de quartos",value = 2)
+    st.session_state["nsuites"] = colsuites.number_input(label = "Nº de suítes",value = 1)
+    st.session_state["nvagas"] = colvagas.number_input(label = "Nº de vagas",value = 1)
     
     st.write("Busque calcular o preço apenas para um imóvel que se assemelhe aos do link pesquisado:exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
     submitted = st.form_submit_button("Coletar Dados & Calcular Preço")
