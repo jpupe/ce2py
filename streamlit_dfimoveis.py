@@ -79,7 +79,8 @@ with st.form("meu_formulario"):
     st.subheader("Análise de imóveis pesquisados - DFimóveis")
     st.write("Pesquise imóveis de interesse no site DFimóveis clicando [aqui.](https://www.dfimoveis.com.br/)")
     link = st.text_input(label = "Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e cole no campo abaixo :point_down:",
-                         value = "https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw", key = link_coleta)
+                         value = "https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
+    st.session_state["link_coleta"] = link
     submitted = st.form_submit_button("Submit")
     if submitted:
         dados_COLETA = coleta_dfimoveis(st.session_state.link_coleta)
