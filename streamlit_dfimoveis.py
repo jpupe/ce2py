@@ -14,7 +14,6 @@ import time, datetime, os
 import statsmodels.api as sm
 import scipy
 #import cv2
-from PIL import Image
 import requests
 
 def coleta_dfimoveis(url):
@@ -74,20 +73,34 @@ def coleta_dfimoveis(url):
 
 
 st.set_page_config(page_title="Analytics ImoApp")
-with st.container():
-    #st.subheader("Trabalho para Computação em Estatística com Python")
-    coltitulo,colimagem = st.columns(2)
-    with coltitulo:
-        st.subheader("Análise de imóveis pesquisados - DFimóveis")
-    with colimagem:
-        url = "https://www.dfimoveis.com.br/img/dfimoveis/logo_colorida.svg"
-        im = Image.open(requests.get(url, stream=True).raw)
-        st.image(im)
-    st.write("Pesquise imóveis de interesse no site DFimóveis clicando [aqui.](https://www.dfimoveis.com.br/)")
-    link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e cole no campo abaixo :point_down:","https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
-    dados_COLETA = coleta_dfimoveis(url=str(link))
 
-dados = dados_COLETA
+with st.form("meu_formulario"):
+    #st.subheader("Trabalho para Computação em Estatística com Python")
+    st.subheader("Análise de imóveis pesquisados - DFimóveis")
+    st.write("Pesquise imóveis de interesse no site DFimóveis clicando [aqui.](https://www.dfimoveis.com.br/)")
+    link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e cole no campo abaixo :point_down:",
+                         "https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw", key = link_coleta)
+
+    submitted = st.form_submit_button("Coletar Dados")
+    if submitted:
+        dados_COLETA = coleta_dfimoveis(st.session_state.link_coleta)
+        st.session_state["dados"] = dados_COLETA
+
+
+#with st.container():
+#    #st.subheader("Trabalho para Computação em Estatística com Python")
+#    coltitulo,colimagem = st.columns(2)
+#    with coltitulo:
+#        st.subheader("Análise de imóveis pesquisados - DFimóveis")
+#    with colimagem:
+#        url = "https://www.dfimoveis.com.br/img/dfimoveis/logo_colorida.svg"
+#        im = Image.open(requests.get(url, stream=True).raw)
+#        st.image(im)
+#    st.write("Pesquise imóveis de interesse no site DFimóveis clicando [aqui.](https://www.dfimoveis.com.br/)")
+#    link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e cole no campo abaixo :point_down:","https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
+#    dados_COLETA = coleta_dfimoveis(url=str(link))
+
+dados = st.session_state.dados#dados_COLETA
 dados['Logradouro'] = dados["Titulo"].str.strip()
 
 dados["Área_Útil"] = pd.to_numeric(pd.Series(dados["Área_Útil"].str.split(" ",expand=True).iloc[:,0].str.replace("\n","").str.strip()))
