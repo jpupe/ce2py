@@ -94,7 +94,7 @@ with st.form("meu_formulario"):
     st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",1)
     
     st.write("Busque calcular o preço apenas para um imóvel que se assemelhe aos do link pesquisado:exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
-    submitted = st.form_submit_button("Coletar Dados")
+    submitted = st.form_submit_button("Coletar Dados & Calcular Preço")
     if submitted:
         dados_COLETA = coleta_dfimoveis(st.session_state.link_coleta)
         st.session_state["dados"] = dados_COLETA
@@ -338,7 +338,7 @@ with st.container():
     csv = convert_df(dados)
 
     st.download_button(
-        label="Download data as CSV",
+        label="Download em .CSV",
         data=csv,
         file_name='Dados_pesquisados.csv',
         mime='text/csv',
