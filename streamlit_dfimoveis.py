@@ -288,20 +288,23 @@ with st.form("meu_formulario"):
                 st.write("O modelo aparentemente está explicando bem a variabilidade dos preços :grin:")
                 st.write("Estime agora o valor de um imóvel :point_down:")
                 colarea,colquartos,colsuites,colvagas = st.columns(4)
-                st.session_state["area"] = colarea.number_input("Área útil",80)
-                st.session_state["nquartos"] = colquartos.number_input("Nº de quartos",2)
-                st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",0)
-                st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",0)
+                #st.session_state["area"] = colarea.number_input("Área útil",80)
+                #st.session_state["nquartos"] = colquartos.number_input("Nº de quartos",2)
+                #st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",1)
+                #st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",1)
+                area = colarea.number_input("Área útil",80)
+                nquartos = colquartos.number_input("Nº de quartos",2)
+                nsuites = colsuites.number_input("Nº de suítes",1)
+                nvagas = colvagas.number_input("Nº de vagas",1)
                 st.write("Busque calcular o preço apenas para um imóvel que se assemelhe aos coletados que estão na amostra:exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
                 dt=st.session_state.params_proj
-                if st.button("Calcular"):
-                    precoest = (dt[dt["Variável"]=="const"].iloc[0,1] + 
-                            dt[dt["Variável"]=="Área_Útil"].iloc[0,1]*st.session_state.area +
-                            dt[dt["Variável"]=="Quartos"].iloc[0,1]*st.session_state.nquartos +
-                            dt[dt["Variável"]=="Suítes"].iloc[0,1]*st.session_state.nsuites + 
-                            dt[dt["Variável"]=="Vagas"].iloc[0,1]*st.session_state.nvagas)
-                
-                    st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
+                precoest = (dt[dt["Variável"]=="const"].iloc[0,1] + 
+                            dt[dt["Variável"]=="Área_Útil"].iloc[0,1]*area +
+                            dt[dt["Variável"]=="Quartos"].iloc[0,1]*nquartos +
+                            dt[dt["Variável"]=="Suítes"].iloc[0,1]*nsuites + 
+                            dt[dt["Variável"]=="Vagas"].iloc[0,1]*nvagas)
+                 if st.button("Calcular"):
+                     st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
     
     
     with tabmet:
