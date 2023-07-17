@@ -101,7 +101,7 @@ with st.form("meu_formulario"):
 
 
 dados = st.session_state.dados
-dados['Logradouro'] = dados["Titulo"].str.strip()
+dados['Logradouro'] = dados["Titulo"].str.strip().str.replace("  "," ").str.replace("  "," ").str.replace("  "," ").str.replace("  "," ")
 
 dados["Área_Útil"] = pd.to_numeric(pd.Series(dados["Área_Útil"].str.split(" ",expand=True).iloc[:,0].str.replace("\n","").str.strip()))
 
