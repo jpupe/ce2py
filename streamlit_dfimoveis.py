@@ -74,8 +74,8 @@ def coleta_dfimoveis(url):
 
 st.set_page_config(page_title="Analytics ImoApp")
 
-firstcoleta = coleta_dfimoveis("https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
-st.session_state["dados"] = firstcoleta
+dados_COLETA = coleta_dfimoveis("https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
+st.session_state["dados"] = dados_COLETA
 
 with st.form("meu_formulario"):
     #st.subheader("Trabalho para Computação em Estatística com Python")
