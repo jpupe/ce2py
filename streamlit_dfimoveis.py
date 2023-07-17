@@ -301,7 +301,7 @@ with tabpred:
                 st.session_state["nquartos"] = colquartos.number_input("Nº de quartos",0)
                 st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",0)
                 st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",0)
-                st.writer("Busque calcular o preço apenas para um imóvel que se assemelhe aos coletados que estão na amostra :exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
+                st.write("Busque calcular o preço apenas para um imóvel que se assemelhe aos coletados que estão na amostra :exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
 
                 submitted = st.form_submit_button("Calcular")
                 if submitted:
