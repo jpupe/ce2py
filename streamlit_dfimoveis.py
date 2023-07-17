@@ -74,6 +74,8 @@ def coleta_dfimoveis(url):
 
 st.set_page_config(page_title="Analytics ImoApp")
 
+st.session_state["dados"] = coleta_dfimoveis("https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
+
 with st.form("meu_formulario"):
     #st.subheader("Trabalho para Computação em Estatística com Python")
     st.subheader("Análise de imóveis pesquisados - DFimóveis")
@@ -290,21 +292,22 @@ with tabpred:
         if r2<0.5:
             st.write("O R-quadrado ajustado do modelo não está legal :confused:, provavelmente sua amostra não está específica ou significativa o suficiente, indicamos que faça uma nova pesquisa no site, filtrando uma amostra melhor, e dessa maneira renove o link aqui no app :wink:")
         if r2 > 0.5:
-            st.write("O modelo aparentemente está explicando bem a variabilidade dos preços :grin:")
-            st.write("Estime agora o valor de um imóvel :point_down:")
-            colarea,colquartos,colsuites,colvagas = st.columns(4)
-            area = colarea.number_input("Área útil",0)
-            nquartos = colquartos.number_input("Nº de quartos",0)
-            nsuites = colsuites.number_input("Nº de suítes",0)
-            nvagas = colvagas.number_input("Nº de vagas",0)
+            st.form("inputs_projecao"):
+                st.write("O modelo aparentemente está explicando bem a variabilidade dos preços :grin:")
+                st.write("Estime agora o valor de um imóvel :point_down:")
+                colarea,colquartos,colsuites,colvagas = st.columns(4)
+                st.session_state["area"] = colarea.number_input("Área útil",0)
+                st.session_state["nquartos"] = colquartos.number_input("Nº de quartos",0)
+                st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",0)
+                st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",0)
 
-            precoest = (dt_params_completa[dt_params_completa["Variável"]=="const"].iloc[0,1] + 
-                     dt_params_completa[dt_params_completa["Variável"]=="Área_Útil"].iloc[0,1]*area +
-                     dt_params_completa[dt_params_completa["Variável"]=="Quartos"].iloc[0,1]*nquartos +
-                     dt_params_completa[dt_params_completa["Variável"]=="Suítes"].iloc[0,1]*nsuites + 
-                     dt_params_completa[dt_params_completa["Variável"]=="Vagas"].iloc[0,1]*nvagas)
+                precoest = (dt_params_completa[dt_params_completa["Variável"]=="const"].iloc[0,1] + 
+                     dt_params_completa[dt_params_completa["Variável"]=="Área_Útil"].iloc[0,1]*st.session_state.area +
+                     dt_params_completa[dt_params_completa["Variável"]=="Quartos"].iloc[0,1]*st.session_state.nquartos +
+                     dt_params_completa[dt_params_completa["Variável"]=="Suítes"].iloc[0,1]*st.session_state.nsuites + 
+                     dt_params_completa[dt_params_completa["Variável"]=="Vagas"].iloc[0,1]*st.session_state.nvagas)
             
-            st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
+                st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
 
             
 
