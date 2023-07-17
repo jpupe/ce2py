@@ -284,26 +284,25 @@ with tabpred:
         if r2<0.5:
             st.write("O R-quadrado ajustado do modelo não está legal :confused:, provavelmente sua amostra não está específica ou significativa o suficiente, indicamos que faça uma nova pesquisa no site, filtrando uma amostra melhor, e dessa maneira renove o link aqui no app :wink:")
         if r2 > 0.5:
-            with st.form("inputs"):
-                st.write("O modelo aparentemente está explicando bem a variabilidade dos preços :grin:")
-                st.write("Estime agora o valor de um imóvel :point_down:")
-                colarea,colquartos,colsuites,colvagas = st.columns(4)
-                st.session_state["area"] = colarea.number_input("Área útil",0)
-                st.session_state["nquartos"] = colquartos.number_input("Nº de quartos",0)
-                st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",0)
-                st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",0)
-                st.write("Busque calcular o preço apenas para um imóvel que se assemelhe aos coletados que estão na amostra:exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
-
-                submitted = st.form_submit_button("Calcular")
-                if submitted:
-                    dt=st.session_state.params_proj
-                    precoest = (dt[dt["Variável"]=="const"].iloc[0,1] + 
-                                dt[dt["Variável"]=="Área_Útil"].iloc[0,1]*st.session_state.area +
-                                dt[dt["Variável"]=="Quartos"].iloc[0,1]*st.session_state.nquartos +
-                                dt[dt["Variável"]=="Suítes"].iloc[0,1]*st.session_state.nsuites + 
-                                dt[dt["Variável"]=="Vagas"].iloc[0,1]*st.session_state.nvagas)
+            #with st.form("inputs"):
+            st.write("O modelo aparentemente está explicando bem a variabilidade dos preços :grin:")
+            st.write("Estime agora o valor de um imóvel :point_down:")
+            colarea,colquartos,colsuites,colvagas = st.columns(4)
+            st.session_state["area"] = colarea.number_input("Área útil",0)
+            st.session_state["nquartos"] = colquartos.number_input("Nº de quartos",0)
+            st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",0)
+            st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",0)
+            st.write("Busque calcular o preço apenas para um imóvel que se assemelhe aos coletados que estão na amostra:exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
+            #submitted = st.form_submit_button("Calcular")
+            #    if submitted:
+            dt=st.session_state.params_proj
+            precoest = (dt[dt["Variável"]=="const"].iloc[0,1] + 
+                        dt[dt["Variável"]=="Área_Útil"].iloc[0,1]*st.session_state.area +
+                        dt[dt["Variável"]=="Quartos"].iloc[0,1]*st.session_state.nquartos +
+                        dt[dt["Variável"]=="Suítes"].iloc[0,1]*st.session_state.nsuites + 
+                        dt[dt["Variável"]=="Vagas"].iloc[0,1]*st.session_state.nvagas)
             
-                    st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
+            st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
 
             
 
