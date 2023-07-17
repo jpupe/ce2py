@@ -90,20 +90,7 @@ with st.form("meu_formulario"):
         st.session_state["dados"] = dados_COLETA
 
 
-#with st.container():
-#    #st.subheader("Trabalho para Computação em Estatística com Python")
-#    coltitulo,colimagem = st.columns(2)
-#    with coltitulo:
-#        st.subheader("Análise de imóveis pesquisados - DFimóveis")
-#    with colimagem:
-#        url = "https://www.dfimoveis.com.br/img/dfimoveis/logo_colorida.svg"
-#        im = Image.open(requests.get(url, stream=True).raw)
-#        st.image(im)
-#    st.write("Pesquise imóveis de interesse no site DFimóveis clicando [aqui.](https://www.dfimoveis.com.br/)")
-#    link = st.text_input("Feita a pesquisa, o site retornará a lista paginada de imóveis resultantes, copie o link da pesquisa e cole no campo abaixo :point_down:","https://www.dfimoveis.com.br/aluguel/df/brasilia/noroeste/apartamento?palavrachave=sqnw")
-#    dados_COLETA = coleta_dfimoveis(url=str(link))
-
-dados = st.session_state.dados#dados_COLETA
+dados = st.session_state.dados
 dados['Logradouro'] = dados["Titulo"].str.strip()
 
 dados["Área_Útil"] = pd.to_numeric(pd.Series(dados["Área_Útil"].str.split(" ",expand=True).iloc[:,0].str.replace("\n","").str.strip()))
@@ -175,6 +162,7 @@ dados = dados[dados["Preço/m²"]<= LS_precom2]
 
 dados.index = range(len(dados))
 
+st.session_state["dados_limpos"] = dados
 
 with st.container():
     st.write(f"Foram coletados {len(dados_COLETA)} imóveis, e deles, {len(dados)} estão, aparentemente, com informações corretas e serão úteis para as análise seguintes:")
@@ -185,7 +173,7 @@ tabdesc,tabpred,tabmet = st.tabs(["Análises Descritivas :bar_chart:","Análises
 with tabdesc:
     with st.container():
         st.title("Análises Descritivas :bar_chart:")
-        dados_teste = dados
+        dados = st.session_state.dados_limpos
         col1, col2, col3 = st.columns(3)
         col1.metric(label="Mínimo de Área", value=f'{round(dados["Área_Útil"].min(),2)} m²')
         col1.metric(label="Média de Área", value=f'{round(dados["Área_Útil"].mean(),2)} m²')
@@ -247,6 +235,7 @@ with tabpred:
     with st.container():
         st.title("Análises Preditivas :dart:")
         st.write("Para estimar preços de imóveis semelhantes aos da pesquisa feita, utiliza-se as variáveis numéricas Área_Útil, Quartos, Suítes e Vagas para traçar um modelo de regressão múltipla por Método dos Mínimos Quadrados Ordinários (MQO)")
+        dados = st.session_state.dados_limpos
         y=dados["Preço"]
         x=dados.iloc[:,[1,2,3,4]]
         x=sm.add_constant(x)
