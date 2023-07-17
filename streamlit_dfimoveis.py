@@ -303,8 +303,8 @@ with tabpred:
                         dt[dt["Variável"]=="Quartos"].iloc[0,1]*nquartos +
                         dt[dt["Variável"]=="Suítes"].iloc[0,1]*nsuites + 
                         dt[dt["Variável"]=="Vagas"].iloc[0,1]*nvagas)
-             if st.button("Calcular"):
-                 st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
+             #if st.button("Calcular"):
+             st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
 
 
 with tabmet:
