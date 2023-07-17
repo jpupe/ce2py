@@ -293,16 +293,16 @@ with st.form("meu_formulario"):
                 st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",0)
                 st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",0)
                 st.write("Busque calcular o preço apenas para um imóvel que se assemelhe aos coletados que estão na amostra:exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
-                #submitted = st.form_submit_button("Calcular")
-                #    if submitted:
-                dt=st.session_state.params_proj
-                precoest = (dt[dt["Variável"]=="const"].iloc[0,1] + 
+                submitted = st.form_submit_button("Calcular")
+                if submitted:
+                    dt=st.session_state.params_proj
+                    precoest = (dt[dt["Variável"]=="const"].iloc[0,1] + 
                             dt[dt["Variável"]=="Área_Útil"].iloc[0,1]*st.session_state.area +
                             dt[dt["Variável"]=="Quartos"].iloc[0,1]*st.session_state.nquartos +
                             dt[dt["Variável"]=="Suítes"].iloc[0,1]*st.session_state.nsuites + 
                             dt[dt["Variável"]=="Vagas"].iloc[0,1]*st.session_state.nvagas)
                 
-                st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
+                    st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
     
     
     with tabmet:
