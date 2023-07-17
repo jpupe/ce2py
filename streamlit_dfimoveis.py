@@ -290,7 +290,6 @@ with tabpred:
             #st.session_state["nquartos"] = colquartos.number_input("Nº de quartos",2)
             #st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",1)
             #st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",1)
-            @st.cache
             area = colarea.number_input("Área útil",80)
             nquartos = colquartos.number_input("Nº de quartos",2)
             nsuites = colsuites.number_input("Nº de suítes",1)
