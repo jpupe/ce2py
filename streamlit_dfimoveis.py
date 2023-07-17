@@ -16,6 +16,7 @@ import scipy
 #import cv2
 import requests
 
+@st.cache
 def coleta_dfimoveis(url):
     ts=1
     scraper = cloudscraper.create_scraper()
