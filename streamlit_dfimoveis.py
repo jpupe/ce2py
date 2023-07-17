@@ -271,6 +271,8 @@ with tabpred:
         dt_params_completa = dt_params_completa.merge(dt_params,how="left",on=["Variável"])
         dt_params_completa["Parâmetros"] = dt_params_completa["Parâmetros"].fillna(0)
 
+        st.session_state["params_proj"] = dt_params_completa
+
         vars = ""
         for i in range(1,len(dt_params.index)):
             vars = vars + dt_params.index[i] + ", "
@@ -290,15 +292,16 @@ with tabpred:
                 st.session_state["nquartos"] = colquartos.number_input("Nº de quartos",0)
                 st.session_state["nsuites"] = colsuites.number_input("Nº de suítes",0)
                 st.session_state["nvagas"] = colvagas.number_input("Nº de vagas",0)
-                st.write("Busque calcular o preço apenas para um imóvel que se assemelhe aos coletados que estão na amostra :exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
+                st.write("Busque calcular o preço apenas para um imóvel que se assemelhe aos coletados que estão na amostra:exclamation: Caso contrário pode obter um preço que não condiz com a realidade dos anúncios :x: :confused:")
 
                 submitted = st.form_submit_button("Calcular")
                 if submitted:
-                    precoest = (dt_params_completa[dt_params_completa["Variável"]=="const"].iloc[0,1] + 
-                                dt_params_completa[dt_params_completa["Variável"]=="Área_Útil"].iloc[0,1]*st.session_state.area +
-                                dt_params_completa[dt_params_completa["Variável"]=="Quartos"].iloc[0,1]*st.session_state.nquartos +
-                                dt_params_completa[dt_params_completa["Variável"]=="Suítes"].iloc[0,1]*st.session_state.nsuites + 
-                                dt_params_completa[dt_params_completa["Variável"]=="Vagas"].iloc[0,1]*st.session_state.nvagas)
+                    dt=st.session_state.params_proj
+                    precoest = (dt[dt["Variável"]=="const"].iloc[0,1] + 
+                                dt[dt["Variável"]=="Área_Útil"].iloc[0,1]*st.session_state.area +
+                                dt[dt["Variável"]=="Quartos"].iloc[0,1]*st.session_state.nquartos +
+                                dt[dt["Variável"]=="Suítes"].iloc[0,1]*st.session_state.nsuites + 
+                                dt[dt["Variável"]=="Vagas"].iloc[0,1]*st.session_state.nvagas)
             
                     st.metric(label="Preço estimado", value=f'R$ {precoest:,.2f}')
 
